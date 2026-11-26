@@ -1,0 +1,3 @@
+import {releaseCatalog,approvedDownload} from './releases.mjs';
+const root=document.querySelector('#releases');root.replaceChildren();
+for(const release of releaseCatalog){const card=document.createElement('article'),info=document.createElement('div'),title=document.createElement('strong'),channel=document.createElement('small');title.textContent=release.name;channel.textContent=release.channel;info.append(title,channel);card.append(info);const url=approvedDownload(release);const action=document.createElement(url?'a':'span');action.textContent=url?'Download':'Not released';if(url)action.href=url;card.append(action);root.append(card);}

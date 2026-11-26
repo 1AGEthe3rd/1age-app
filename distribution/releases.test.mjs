@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {releaseCatalog,approvedDownload} from './releases.mjs';
+test('planned releases have no download',()=>{for(const r of releaseCatalog)assert.equal(approvedDownload(r),null);});
+test('published iOS URL is restricted',()=>{assert.ok(approvedDownload({id:'ios',status:'published',url:'https://apps.apple.com/us/app/example/id123456'}));assert.equal(approvedDownload({id:'ios',status:'published',url:'https://apps.apple.com.evil.test/id123'}),null);});
+test('Android listing is restricted',()=>{assert.ok(approvedDownload({id:'android',status:'published',url:'https://play.google.com/store/apps/details?id=example.app'}));assert.equal(approvedDownload({id:'android',status:'published',url:'javascript:alert(1)'}),null);});
+test('unverified desktop and planned links remain disabled',()=>{assert.equal(approvedDownload({id:'desktop',status:'published',url:'https://example.com/file'}),null);assert.equal(approvedDownload({id:'ios',status:'planned',url:'https://apps.apple.com/us/app/example/id123'}),null);});
